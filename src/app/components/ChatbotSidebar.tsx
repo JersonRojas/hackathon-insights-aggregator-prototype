@@ -7,6 +7,12 @@ import { Textarea } from "./ui/textarea";
 import { dataSources } from "../data/mockData";
 import { ScrollArea } from "./ui/scroll-area";
 import { BASE_API_URL } from "../constants/config";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "./ui/accordion";
 
 interface Message {
   role: "user" | "assistant";
@@ -79,9 +85,9 @@ export function ChatbotSidebar() {
   };
 
   return (
-    <div className="h-full flex flex-col p-6">
+    <div className="h-full flex flex-col p-4 sm:p-6">
       {/* Header */}
-      <div className="mb-6">
+      <div className="mb-4">
         <div className="flex items-center gap-3 mb-2">
           <div className="gradient-purple-pink p-2 rounded-xl shadow-lg">
             <Sparkles className="h-5 w-5 text-white" />
@@ -93,11 +99,93 @@ export function ChatbotSidebar() {
         </p>
       </div>
 
+      {/* Data Sources - Accordion */}
+      <div className="mb-4">
+        <Accordion type="single" collapsible className="w-full">
+          <AccordionItem value="data-sources" className="border-slate-700/30">
+            <AccordionTrigger className="text-sm font-medium text-slate-200 hover:no-underline hover:text-white py-2">
+              <div className="flex items-center gap-2">
+                <Database className="h-4 w-4" />
+                Select data sources
+              </div>
+            </AccordionTrigger>
+            <AccordionContent>
+              <div className="space-y-2 pt-2 pb-2">
+                {sources.map((source) => (
+                  <div
+                    key={source.id}
+                    className="flex items-center space-x-3 glass-card p-3 rounded-xl border border-slate-700/30 hover:border-purple-500/30 transition-all"
+                  >
+                    <Checkbox
+                      id={source.id}
+                      checked={source.enabled}
+                      onCheckedChange={() => toggleSource(source.id)}
+                      className="border-slate-600 data-[state=checked]:bg-purple-500 data-[state=checked]:border-purple-500"
+                    />
+                    <Label
+                      htmlFor={source.id}
+                      className="text-sm text-slate-200 cursor-pointer font-normal"
+                    >
+                      {source.name}
+                    </Label>
+                  </div>
+                ))}
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+      </div>
+
+      {/* Chat Messages */}
+      <div className="flex-1 min-h-0 mb-4 flex flex-col">
+        <ScrollArea className="flex-1 glass-card border border-purple-500/20 rounded-2xl p-4">
+          <div className="space-y-4">
+            {messages.map((message, idx) => (
+              <div
+                key={idx}
+                className={`
+                  rounded-2xl p-4 text-sm
+                  ${
+                    message.role === "assistant"
+                      ? "glass-card border border-purple-500/30 text-slate-200"
+                      : "gradient-blue-purple text-white"
+                  }
+                `}
+              >
+                <div className="font-medium mb-2 text-xs uppercase tracking-wide opacity-70 flex items-center gap-2">
+                  {message.role === "assistant" ? (
+                    <>
+                      <Sparkles className="h-3 w-3" />
+                      Insight Scout
+                    </>
+                  ) : (
+                    "You"
+                  )}
+                </div>
+                <div className="leading-relaxed whitespace-pre-wrap">
+                  {message.content}
+                </div>
+              </div>
+            ))}
+            {isThinking && (
+              <div className="glass-card border border-purple-500/30 rounded-2xl p-4 text-sm">
+                <div className="font-medium mb-2 text-xs uppercase tracking-wide opacity-70 text-slate-200 flex items-center gap-2">
+                  <Sparkles className="h-3 w-3" />
+                  Insight Scout
+                </div>
+                <div className="flex items-center gap-2 text-slate-200">
+                  <Loader2 className="h-4 w-4 animate-spin text-purple-400" />
+                  <span className="italic">Analyzing data sources...</span>
+                </div>
+              </div>
+            )}
+            {/* Invisible element to scroll to bottom could be added here */}
+          </div>
+        </ScrollArea>
+      </div>
+
       {/* Prompt Input */}
-      <div className="mb-6">
-        <Label className="text-sm font-medium text-slate-200 mb-3 block">
-          Prompt
-        </Label>
+      <div className="mt-auto">
         <div className="relative">
           <Textarea
             placeholder="What needs my attention right now?"
@@ -124,83 +212,6 @@ export function ChatbotSidebar() {
             )}
           </Button>
         </div>
-      </div>
-
-      {/* Data Sources */}
-      <div className="mb-6">
-        <Label className="text-sm font-medium text-slate-200 mb-3 block flex items-center gap-2">
-          <Database className="h-4 w-4" />
-          Select data sources
-        </Label>
-        <div className="space-y-2">
-          {sources.map((source) => (
-            <div
-              key={source.id}
-              className="flex items-center space-x-3 glass-card p-3 rounded-xl border border-slate-700/30 hover:border-purple-500/30 transition-all"
-            >
-              <Checkbox
-                id={source.id}
-                checked={source.enabled}
-                onCheckedChange={() => toggleSource(source.id)}
-                className="border-slate-600 data-[state=checked]:bg-purple-500 data-[state=checked]:border-purple-500"
-              />
-              <Label
-                htmlFor={source.id}
-                className="text-sm text-slate-200 cursor-pointer font-normal"
-              >
-                {source.name}
-              </Label>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Chat Messages */}
-      <div className="flex-1 min-h-0">
-        <Label className="text-sm font-medium text-slate-200 mb-3 block">
-          Conversation
-        </Label>
-        <ScrollArea className="h-full glass-card border border-purple-500/20 rounded-2xl p-4">
-          <div className="space-y-4">
-            {messages.map((message, idx) => (
-              <div
-                key={idx}
-                className={`
-                  rounded-2xl p-4 text-sm
-                  ${
-                    message.role === "assistant"
-                      ? "glass-card border border-purple-500/30 text-slate-200"
-                      : "gradient-blue-purple text-white"
-                  }
-                `}
-              >
-                <div className="font-medium mb-2 text-xs uppercase tracking-wide opacity-70 flex items-center gap-2">
-                  {message.role === "assistant" ? (
-                    <>
-                      <Sparkles className="h-3 w-3" />
-                      Insight Scout
-                    </>
-                  ) : (
-                    "You"
-                  )}
-                </div>
-                <div className="leading-relaxed">{message.content}</div>
-              </div>
-            ))}
-            {isThinking && (
-              <div className="glass-card border border-purple-500/30 rounded-2xl p-4 text-sm">
-                <div className="font-medium mb-2 text-xs uppercase tracking-wide opacity-70 text-slate-200 flex items-center gap-2">
-                  <Sparkles className="h-3 w-3" />
-                  Insight Scout
-                </div>
-                <div className="flex items-center gap-2 text-slate-200">
-                  <Loader2 className="h-4 w-4 animate-spin text-purple-400" />
-                  <span className="italic">Analyzing data sources...</span>
-                </div>
-              </div>
-            )}
-          </div>
-        </ScrollArea>
       </div>
     </div>
   );
