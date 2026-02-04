@@ -4,84 +4,26 @@ import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
 import { Label } from "./ui/label";
 import { Textarea } from "./ui/textarea";
-import { dataSources } from "../data/mockData";
 import { ScrollArea } from "./ui/scroll-area";
-import { BASE_API_URL } from "../constants/config";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "./ui/accordion";
-
-interface Message {
-  role: "user" | "assistant";
-  content: string;
-}
+import { useChat } from "../context/ChatContext";
+import { motion, AnimatePresence } from "motion/react";
 
 export function ChatbotSidebar() {
-  const [sources, setSources] = useState(dataSources);
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      role: "assistant",
-      content:
-        "Hello! I'm Insight Scout. What would you like to know about your product performance?",
-    },
-  ]);
+  const { messages, sources, isThinking, toggleSource, sendMessage } =
+    useChat();
   const [inputValue, setInputValue] = useState("");
-  const [isThinking, setIsThinking] = useState(false);
-
-  const toggleSource = (id: string) => {
-    setSources(
-      sources.map((s) => (s.id === id ? { ...s, enabled: !s.enabled } : s)),
-    );
-  };
 
   const handleSend = async () => {
     if (!inputValue.trim()) return;
-
-    // Add user message
-    const userMessage: Message = { role: "user", content: inputValue };
-    setMessages((prev) => [...prev, userMessage]);
-    const currentInput = inputValue;
+    const content = inputValue;
     setInputValue("");
-    setIsThinking(true);
-
-    try {
-      // API call to custom webhook
-      const response = await fetch(BASE_API_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "text/plain",
-        },
-        body: currentInput,
-      });
-
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-
-      const data = await response.json();
-
-      const assistantMessage: Message = {
-        role: "assistant",
-        content:
-          data.output ||
-          "I'm sorry, possibly the response format is unexpected.",
-      };
-
-      setMessages((prev) => [...prev, assistantMessage]);
-    } catch (error) {
-      console.error("Error fetching response:", error);
-      const errorMessage: Message = {
-        role: "assistant",
-        content:
-          "Sorry, I'm having trouble connecting to the server for insights right now. Please try again later.",
-      };
-      setMessages((prev) => [...prev, errorMessage]);
-    } finally {
-      setIsThinking(false);
-    }
+    await sendMessage(content);
   };
 
   return (
@@ -140,45 +82,60 @@ export function ChatbotSidebar() {
       <div className="flex-1 min-h-0 mb-4 flex flex-col">
         <ScrollArea className="flex-1 glass-card border border-purple-500/20 rounded-2xl p-4">
           <div className="space-y-4">
-            {messages.map((message, idx) => (
-              <div
-                key={idx}
-                className={`
-                  rounded-2xl p-4 text-sm
-                  ${
-                    message.role === "assistant"
-                      ? "glass-card border border-purple-500/30 text-slate-200"
-                      : "gradient-blue-purple text-white"
-                  }
-                `}
-              >
-                <div className="font-medium mb-2 text-xs uppercase tracking-wide opacity-70 flex items-center gap-2">
-                  {message.role === "assistant" ? (
-                    <>
-                      <Sparkles className="h-3 w-3" />
-                      Insight Scout
-                    </>
-                  ) : (
-                    "You"
-                  )}
-                </div>
-                <div className="leading-relaxed whitespace-pre-wrap">
-                  {message.content}
-                </div>
-              </div>
-            ))}
-            {isThinking && (
-              <div className="glass-card border border-purple-500/30 rounded-2xl p-4 text-sm">
-                <div className="font-medium mb-2 text-xs uppercase tracking-wide opacity-70 text-slate-200 flex items-center gap-2">
-                  <Sparkles className="h-3 w-3" />
-                  Insight Scout
-                </div>
-                <div className="flex items-center gap-2 text-slate-200">
-                  <Loader2 className="h-4 w-4 animate-spin text-purple-400" />
-                  <span className="italic">Analyzing data sources...</span>
-                </div>
-              </div>
-            )}
+            <AnimatePresence mode="popLayout">
+              {messages.map((message, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  transition={{
+                    duration: 0.3,
+                    type: "spring",
+                    stiffness: 200,
+                    damping: 20,
+                  }}
+                  className={`
+                    rounded-2xl p-4 text-sm
+                    ${
+                      message.role === "assistant"
+                        ? "glass-card border border-purple-500/30 text-slate-200"
+                        : "gradient-blue-purple text-white"
+                    }
+                  `}
+                >
+                  <div className="font-medium mb-2 text-xs uppercase tracking-wide opacity-70 flex items-center gap-2">
+                    {message.role === "assistant" ? (
+                      <>
+                        <Sparkles className="h-3 w-3" />
+                        Insight Scout
+                      </>
+                    ) : (
+                      "You"
+                    )}
+                  </div>
+                  <div className="leading-relaxed whitespace-pre-wrap">
+                    {message.content}
+                  </div>
+                </motion.div>
+              ))}
+              {isThinking && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                  className="glass-card border border-purple-500/30 rounded-2xl p-4 text-sm"
+                >
+                  <div className="font-medium mb-2 text-xs uppercase tracking-wide opacity-70 text-slate-200 flex items-center gap-2">
+                    <Sparkles className="h-3 w-3" />
+                    Insight Scout
+                  </div>
+                  <div className="flex items-center gap-2 text-slate-200">
+                    <Loader2 className="h-4 w-4 animate-spin text-purple-400" />
+                    <span className="italic">Analyzing data sources...</span>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
             {/* Invisible element to scroll to bottom could be added here */}
           </div>
         </ScrollArea>
