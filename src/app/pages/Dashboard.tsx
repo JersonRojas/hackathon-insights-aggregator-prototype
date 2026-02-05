@@ -1,19 +1,42 @@
-import { useNavigate } from 'react-router';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
-import { Button } from '../components/ui/button';
-import { Badge } from '../components/ui/badge';
-import { Progress } from '../components/ui/progress';
-import { ArrowRight, TrendingUp, TrendingDown, AlertCircle, CheckCircle, ArrowUpRight, Lightbulb, Search, Zap } from 'lucide-react';
-import { metrics, painPoints, trendingInsights, recommendations, themes } from '../data/mockData';
+import { useNavigate } from "react-router";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../components/ui/card";
+import { Button } from "../components/ui/button";
+import { Badge } from "../components/ui/badge";
+import { Progress } from "../components/ui/progress";
+import {
+  ArrowRight,
+  TrendingUp,
+  TrendingDown,
+  AlertCircle,
+  CheckCircle,
+  ArrowUpRight,
+  Lightbulb,
+  Search,
+  Zap,
+} from "lucide-react";
+import {
+  metrics,
+  painPoints,
+  trendingInsights,
+  recommendations,
+  themes,
+} from "../data/mockData";
+import insightsData from "../data/insights.json";
 
 export function Dashboard() {
   const navigate = useNavigate();
 
   // Calculate status summary for metrics
   const metricsStatus = {
-    good: metrics.filter(m => m.status === 'good').length,
-    warning: metrics.filter(m => m.status === 'warning').length,
-    critical: metrics.filter(m => m.status === 'critical').length,
+    good: metrics.filter((m) => m.status === "good").length,
+    warning: metrics.filter((m) => m.status === "warning").length,
+    critical: metrics.filter((m) => m.status === "critical").length,
   };
 
   return (
@@ -21,13 +44,17 @@ export function Dashboard() {
       {/* Top Row - Metrics, Pain Points, Trending */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* At a Glance Metrics */}
-        <div 
+        <div
           className="glass-card rounded-2xl overflow-hidden cursor-pointer hover:scale-[1.02] transition-all duration-300 border border-green-500/20 glow-blue"
-          onClick={() => navigate('/dashboard/metrics')}
+          onClick={() => navigate("/dashboard/metrics")}
         >
           <div className="gradient-cyan-blue p-6">
-            <CardTitle className="text-white text-xl">At a Glance Metrics</CardTitle>
-            <CardDescription className="text-blue-100 mt-1">Key performance indicators</CardDescription>
+            <CardTitle className="text-white text-xl">
+              At a Glance Metrics
+            </CardTitle>
+            <CardDescription className="text-blue-100 mt-1">
+              Key performance indicators
+            </CardDescription>
           </div>
           <CardContent className="space-y-5 p-6">
             {/* Status bars */}
@@ -40,16 +67,20 @@ export function Dashboard() {
                     </div>
                     On Track
                   </span>
-                  <span className="text-sm font-semibold text-green-400">{metricsStatus.good}</span>
+                  <span className="text-sm font-semibold text-green-400">
+                    {metricsStatus.good}
+                  </span>
                 </div>
                 <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
-                  <div 
+                  <div
                     className="h-full gradient-green-cyan rounded-full"
-                    style={{ width: `${(metricsStatus.good / metrics.length) * 100}%` }}
+                    style={{
+                      width: `${(metricsStatus.good / metrics.length) * 100}%`,
+                    }}
                   />
                 </div>
               </div>
-              
+
               <div>
                 <div className="flex justify-between items-center mb-3">
                   <span className="text-sm font-medium flex items-center gap-2 text-slate-200">
@@ -58,16 +89,20 @@ export function Dashboard() {
                     </div>
                     Needs Attention
                   </span>
-                  <span className="text-sm font-semibold text-yellow-400">{metricsStatus.warning}</span>
+                  <span className="text-sm font-semibold text-yellow-400">
+                    {metricsStatus.warning}
+                  </span>
                 </div>
                 <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
-                  <div 
+                  <div
                     className="h-full bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-full"
-                    style={{ width: `${(metricsStatus.warning / metrics.length) * 100}%` }}
+                    style={{
+                      width: `${(metricsStatus.warning / metrics.length) * 100}%`,
+                    }}
                   />
                 </div>
               </div>
-              
+
               <div>
                 <div className="flex justify-between items-center mb-3">
                   <span className="text-sm font-medium flex items-center gap-2 text-slate-200">
@@ -76,18 +111,25 @@ export function Dashboard() {
                     </div>
                     Critical
                   </span>
-                  <span className="text-sm font-semibold text-red-400">{metricsStatus.critical}</span>
+                  <span className="text-sm font-semibold text-red-400">
+                    {metricsStatus.critical}
+                  </span>
                 </div>
                 <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
-                  <div 
+                  <div
                     className="h-full gradient-pink-orange rounded-full"
-                    style={{ width: `${(metricsStatus.critical / metrics.length) * 100}%` }}
+                    style={{
+                      width: `${(metricsStatus.critical / metrics.length) * 100}%`,
+                    }}
                   />
                 </div>
               </div>
             </div>
 
-            <Button variant="ghost" className="w-full justify-between mt-6 text-slate-200 hover:text-white hover:bg-blue-500/20 rounded-xl">
+            <Button
+              variant="ghost"
+              className="w-full justify-between mt-6 text-slate-200 hover:text-white hover:bg-blue-500/20 rounded-xl"
+            >
               View Details
               <ArrowRight className="h-4 w-4" />
             </Button>
@@ -95,23 +137,31 @@ export function Dashboard() {
         </div>
 
         {/* Pain Points at a Glance */}
-        <div 
+        <div
           className="glass-card rounded-2xl overflow-hidden cursor-pointer hover:scale-[1.02] transition-all duration-300 border border-red-500/20 glow-pink"
-          onClick={() => navigate('/dashboard/pain-points')}
+          onClick={() => navigate("/dashboard/pain-points")}
         >
           <div className="gradient-pink-orange p-6">
-            <CardTitle className="text-white text-xl">Pain Points at a Glance</CardTitle>
-            <CardDescription className="text-pink-100 mt-1">Top customer issues</CardDescription>
+            <CardTitle className="text-white text-xl">
+              Pain Points at a Glance
+            </CardTitle>
+            <CardDescription className="text-pink-100 mt-1">
+              Top customer issues
+            </CardDescription>
           </div>
           <CardContent className="space-y-5 p-6">
             {painPoints.slice(0, 2).map((pain) => (
               <div key={pain.id} className="flex items-center gap-4">
-                <div 
+                <div
                   className={`
                     h-20 w-20 rounded-2xl flex items-center justify-center flex-shrink-0 text-white font-semibold shadow-lg
-                    ${pain.severity === 'high' ? 'gradient-pink-orange glow-pink' : 
-                      pain.severity === 'medium' ? 'bg-gradient-to-br from-yellow-400 to-orange-500' : 
-                      'gradient-cyan-blue'}
+                    ${
+                      pain.severity === "high"
+                        ? "gradient-pink-orange glow-pink"
+                        : pain.severity === "medium"
+                          ? "bg-gradient-to-br from-yellow-400 to-orange-500"
+                          : "gradient-cyan-blue"
+                    }
                   `}
                 >
                   <div className="text-center">
@@ -120,7 +170,9 @@ export function Dashboard() {
                   </div>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="font-medium text-slate-200 truncate">{pain.title}</div>
+                  <div className="font-medium text-slate-200 truncate">
+                    {pain.title}
+                  </div>
                   <div className="text-xs text-slate-200 mt-1 flex items-center gap-2">
                     <Zap className="h-3 w-3" />
                     {pain.sources.length} sources
@@ -129,7 +181,10 @@ export function Dashboard() {
               </div>
             ))}
 
-            <Button variant="ghost" className="w-full justify-between mt-6 text-slate-300 hover:text-white hover:bg-red-500/20 rounded-xl">
+            <Button
+              variant="ghost"
+              className="w-full justify-between mt-6 text-slate-300 hover:text-white hover:bg-red-500/20 rounded-xl"
+            >
               View All Pain Points
               <ArrowRight className="h-4 w-4" />
             </Button>
@@ -137,18 +192,27 @@ export function Dashboard() {
         </div>
 
         {/* Trending Metrics */}
-        <div 
+        <div
           className="glass-card rounded-2xl overflow-hidden cursor-pointer hover:scale-[1.02] transition-all duration-300 border border-purple-500/20 glow-purple"
-          onClick={() => navigate('/dashboard/trending')}
+          onClick={() => navigate("/dashboard/trending")}
         >
           <div className="gradient-purple-pink p-6">
-            <CardTitle className="text-white text-xl">Trending Insights</CardTitle>
-            <CardDescription className="text-purple-100 mt-1">External market trends</CardDescription>
+            <CardTitle className="text-white text-xl">
+              Trending Insights
+            </CardTitle>
+            <CardDescription className="text-purple-100 mt-1">
+              External market trends
+            </CardDescription>
           </div>
           <CardContent className="space-y-4 p-6">
             {trendingInsights.slice(0, 3).map((insight) => (
-              <div key={insight.id} className="glass-card border-l-4 border-purple-400 rounded-xl pl-4 pr-3 py-3">
-                <div className="font-medium text-slate-200 mb-2">{insight.title}</div>
+              <div
+                key={insight.id}
+                className="glass-card border-l-4 border-purple-400 rounded-xl pl-4 pr-3 py-3"
+              >
+                <div className="font-medium text-slate-200 mb-2">
+                  {insight.title}
+                </div>
                 <div className="flex items-center gap-2 text-xs text-slate-200">
                   <TrendingUp className="h-3 w-3 text-purple-400" />
                   <span>{insight.source}</span>
@@ -160,7 +224,10 @@ export function Dashboard() {
               </div>
             ))}
 
-            <Button variant="ghost" className="w-full justify-between mt-6 text-slate-300 hover:text-white hover:bg-purple-500/20 rounded-xl">
+            <Button
+              variant="ghost"
+              className="w-full justify-between mt-6 text-slate-300 hover:text-white hover:bg-purple-500/20 rounded-xl"
+            >
               View All Trends
               <ArrowRight className="h-4 w-4" />
             </Button>
@@ -168,14 +235,47 @@ export function Dashboard() {
         </div>
       </div>
 
+      {/* Generated Insights Pods */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {insightsData[0].insights.map((insight) => (
+          <div
+            key={insight.id}
+            className="glass-card rounded-2xl overflow-hidden border border-indigo-500/20 hover:border-indigo-500/40 transition-all duration-300"
+          >
+            <div className="p-6 space-y-4">
+              <div className="flex items-start justify-between">
+                <div className="bg-orange-600/50 p-2 rounded-lg">
+                  <Lightbulb className="h-5 w-5 text-white" />
+                </div>
+                <span className="text-xs text-slate-200 bg-slate-800/50 px-2 py-1 rounded-full">
+                  {new Date(insight.updated_at).toLocaleDateString()}
+                </span>
+              </div>
+              <div>
+                <h3 className="font-semibold text-white mb-2 leading-tight">
+                  {insight.title}
+                </h3>
+                <p className="text-sm text-slate-200 leading-relaxed">
+                  {insight.content}
+                </p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
       {/* Bottom Row - Recommendations and Themes */}
-      <div 
+      <div
         className="glass-card rounded-2xl overflow-hidden cursor-pointer hover:scale-[1.01] transition-all duration-300 border border-blue-500/20 glow-blue"
-        onClick={() => navigate('/dashboard/recommendations')}
+        onClick={() => navigate("/dashboard/recommendations")}
       >
         <div className="gradient-blue-purple p-6">
-          <CardTitle className="text-white text-2xl">What You Should Focus On</CardTitle>
-          <CardDescription className="text-blue-100 mt-2 text-base">Prioritized recommendations based on data analysis</CardDescription>
+          <CardTitle className="text-white text-2xl">
+            What You Should Focus On
+          </CardTitle>
+          <CardDescription className="text-blue-100 mt-2 text-base">
+            Prioritized recommendations based on data analysis
+          </CardDescription>
         </div>
         <CardContent className="p-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -193,27 +293,42 @@ export function Dashboard() {
                     key={rec.id}
                     className={`
                       glass-card p-5 rounded-2xl border-l-4 hover:scale-[1.02] transition-all
-                      ${rec.confidenceLevel >= 80 ? 'border-green-400 bg-green-500/5' : 
-                        rec.confidenceLevel >= 70 ? 'border-yellow-400 bg-yellow-500/5' : 
-                        'border-orange-400 bg-orange-500/5'}
+                      ${
+                        rec.confidenceLevel >= 80
+                          ? "border-green-400 bg-green-500/5"
+                          : rec.confidenceLevel >= 70
+                            ? "border-yellow-400 bg-yellow-500/5"
+                            : "border-orange-400 bg-orange-500/5"
+                      }
                     `}
                   >
-                    <div className="font-medium text-slate-200 mb-3">{rec.title}</div>
+                    <div className="font-medium text-slate-200 mb-3">
+                      {rec.title}
+                    </div>
                     <div className="flex items-center gap-3">
                       <div className="flex items-center gap-2">
-                        <span className="text-xs font-medium text-slate-200">Confidence:</span>
-                        <span className={`text-sm font-bold ${
-                          rec.confidenceLevel >= 80 ? 'text-green-400' :
-                          rec.confidenceLevel >= 70 ? 'text-yellow-400' :
-                          'text-orange-400'
-                        }`}>
+                        <span className="text-xs font-medium text-slate-200">
+                          Confidence:
+                        </span>
+                        <span
+                          className={`text-sm font-bold ${
+                            rec.confidenceLevel >= 80
+                              ? "text-green-400"
+                              : rec.confidenceLevel >= 70
+                                ? "text-yellow-400"
+                                : "text-orange-400"
+                          }`}
+                        >
                           {rec.confidenceLevel}%
                         </span>
                       </div>
-                      <Badge className={`text-xs ml-auto ${
-                        rec.impact === 'High' ? 'bg-purple-500/20 text-purple-200 border-purple-500/30' :
-                        'bg-blue-500/20 text-blue-200 border-blue-500/30'
-                      }`}>
+                      <Badge
+                        className={`text-xs ml-auto ${
+                          rec.impact === "high"
+                            ? "bg-purple-500/20 text-purple-200 border-purple-500/30"
+                            : "bg-blue-500/20 text-blue-200 border-blue-500/30"
+                        }`}
+                      >
                         {rec.impact} impact
                       </Badge>
                     </div>
@@ -236,18 +351,22 @@ export function Dashboard() {
                     key={theme.id}
                     className="glass-card p-5 rounded-2xl border-l-4 border-blue-400 bg-blue-500/5 hover:scale-[1.02] transition-all"
                   >
-                    <div className="font-medium text-slate-200 mb-3">{theme.title}</div>
+                    <div className="font-medium text-slate-200 mb-3">
+                      {theme.title}
+                    </div>
                     <div className="flex items-center gap-3 text-xs text-slate-200">
                       <div className="flex items-center gap-1">
                         <Zap className="h-3 w-3 text-blue-400" />
                         <span>{theme.dataPoints} data points</span>
                       </div>
                       <span>•</span>
-                      <Badge 
+                      <Badge
                         className={`text-xs ${
-                          theme.priority === 'high' ? 'bg-red-500/20 text-red-200 border-red-500/30' :
-                          theme.priority === 'medium' ? 'bg-yellow-500/20 text-yellow-200 border-yellow-500/30' :
-                          'bg-slate-500/20 text-slate-200 border-slate-500/30'
+                          theme.priority === "high"
+                            ? "bg-red-500/20 text-red-200 border-red-500/30"
+                            : theme.priority === "medium"
+                              ? "bg-yellow-500/20 text-yellow-200 border-yellow-500/30"
+                              : "bg-slate-500/20 text-slate-200 border-slate-500/30"
                         }`}
                       >
                         {theme.priority} priority
@@ -259,7 +378,10 @@ export function Dashboard() {
             </div>
           </div>
 
-          <Button variant="ghost" className="w-full justify-between mt-8 text-slate-300 hover:text-white hover:bg-purple-500/20 rounded-xl py-6">
+          <Button
+            variant="ghost"
+            className="w-full justify-between mt-8 text-slate-300 hover:text-white hover:bg-purple-500/20 rounded-xl py-6"
+          >
             View All Recommendations & Themes
             <ArrowRight className="h-5 w-5" />
           </Button>

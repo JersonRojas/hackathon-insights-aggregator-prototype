@@ -1,0 +1,37 @@
+[
+  {
+    "insights": [
+      {
+        "id": "rec3LM28XI8Mu5tFn",
+
+        "title": "Conversion Rate Fluctuations and Campaign Impact",
+
+        "content": "Conversion rates peaked in early January and late February, possibly boosted by campaigns near those dates. Later months show dips in conversion despite steady visits, hinting at less effective campaign timing or audience shifts impacting engagement.",
+
+        "updated_at": "2026-02-05T09:39:10.571Z"
+      },
+
+      {
+        "id": "recDbsVDAI9jn1g8I",
+
+        "title": "Conversion Rate Shifts Linked to Campaigns and Seasonal Trends",
+
+        "content": "Conversion rates spike around targeted campaigns and key shopping periods, like early January and late April. Campaigns such as 'Christmas blues' and events in April show corresponding rises in conversion, highlighting the impact of marketing timing on shopper behavior.",
+
+        "updated_at": "2026-02-05T09:35:10.508Z"
+      },
+
+      {
+        "id": "recLT7gkFRmnAhqyr",
+
+        "title": "Conversion Rate Fluctuations in January",
+
+        "content": "Conversion rates spiked around the start of January, coinciding with the \"Christmas blues\" campaign running Jan 4-24. The rates dipped mid-month possibly due to fewer or less effective campaigns and picked up again right after the campaign ended.",
+
+        "updated_at": "2026-02-04T23:51:51.761Z"
+      }
+    ],
+
+    "fingerprint": "rec3LM28XI8Mu5tFn:2026-02-05T09:39:10.571Z|recDbsVDAI9jn1g8I:2026-02-05T09:35:10.508Z|recLT7gkFRmnAhqyr:2026-02-04T23:51:51.761Z"
+  }
+]
