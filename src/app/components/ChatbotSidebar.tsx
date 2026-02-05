@@ -80,7 +80,7 @@ export function ChatbotSidebar() {
 
       {/* Chat Messages */}
       <div className="flex-1 min-h-0 mb-4 flex flex-col">
-        <ScrollArea className="flex-1 glass-card border border-purple-500/20 rounded-2xl p-4">
+        <ScrollArea className="flex-1 glass-card border border-purple-500/20 rounded-2xl p-4 overflow-auto">
           <div className="space-y-4">
             <AnimatePresence mode="popLayout">
               {messages.map((message, idx) => (

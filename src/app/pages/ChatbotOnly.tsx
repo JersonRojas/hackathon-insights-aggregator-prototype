@@ -141,14 +141,14 @@ export function ChatbotOnly() {
   const showStartButton = selectedSources.length > 0 && messages.length > 2;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-purple-950 to-slate-900 relative overflow-hidden flex items-center justify-center p-6">
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-purple-950 to-slate-900 relative overflow-y-auto overflow-x-hidden flex p-6">
       {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden">
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
       </div>
 
-      <div className="relative z-10 w-full max-w-3xl">
+      <div className="relative z-10 w-full max-w-3xl m-auto">
         {/* Header */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-2 glass-card text-purple-200 px-6 py-3 rounded-full text-sm font-medium mb-6 glow-purple">
